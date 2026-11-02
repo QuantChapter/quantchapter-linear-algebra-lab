@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quantchapter-linear-algebra-lab"
+version = "0.1.0"
+description = "An explicit, tested square-system solver with worked linear-algebra examples."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "QuantChapter" }]
+dependencies = []
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Education",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/QuantChapter/quantchapter-linear-algebra-lab"
+Documentation = "https://github.com/QuantChapter/quantchapter-linear-algebra-lab/tree/main/docs"
+Repository = "https://github.com/QuantChapter/quantchapter-linear-algebra-lab"
+Issues = "https://github.com/QuantChapter/quantchapter-linear-algebra-lab/issues"
+
+[project.scripts]
+quantchapter-linear-algebra = "quantchapter_linear_algebra.cli:main"
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.9,<4", "pillow>=13,<14"]
+
+[dependency-groups]
+test = ["pytest>=8.3,<10", "pytest-cov>=6,<8", "hypothesis>=6.125,<7"]
+quality = [
+  "build>=1.2,<2",
+  "hatchling>=1.27,<2",
+  "ruff>=0.11,<1",
+  "mypy>=1.15,<2",
+  "twine>=7,<8",
+  "pip-audit>=2.8,<3",
+  "filelock>=4.2.1,<5",
+]
+dev = [{ include-group = "test" }, { include-group = "quality" }]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantchapter_linear_algebra"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/tools", "/examples", "/data", "/docs", "/README.md", "/LICENSE", "/CHANGELOG.md", "/CONTRIBUTING.md", "/SECURITY.md", "/pyproject.toml", "/uv.lock"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-config --strict-markers --cov=quantchapter_linear_algebra --cov-branch --cov-report=term-missing:skip-covered --cov-fail-under=95"
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["quantchapter_linear_algebra"]
+
+[tool.coverage.report]
+precision = 2
+exclude_also = ['if __name__ == ["\x27]__main__["\x27]:']
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src"]
+strict = true
+warn_unreachable = true
